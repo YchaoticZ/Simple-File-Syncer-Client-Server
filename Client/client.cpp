@@ -56,23 +56,6 @@ struct __attribute__ ((__packed__)) file_recv{
 
 int numManFiles = 0;
 
-/*
-
-6:04 PM - honest to god brain genius: static library build
-6:05 PM - honest to god brain genius: output as .o file
-6:05 PM - honest to god brain genius: you dont use a main
-6:05 PM - honest to god brain genius: for your libraries
-6:05 PM - honest to god brain genius: because the entry point is in another program
-6:05 PM - honest to god brain genius: basically instead of -o client
-6:05 PM - honest to god brain genius: youd do whatever
-6:05 PM - honest to god brain genius: the convention is .o
-6:05 PM - honest to god brain genius: then you use ar to make it into a static lib
-6:06 PM - @nevinyrral #colors: AR??????????
-6:06 PM - honest to god brain genius: ar rcs libxyz.a (all the objects)
-6:06 PM - honest to god brain genius: and thats it
-6:06 PM - honest to god brain genius: know how you use -lssl
-
-*/
 
 int main (int argc, char *argv[]){ // format is ./client website port
 
@@ -137,8 +120,6 @@ int main (int argc, char *argv[]){ // format is ./client website port
 
 		rewinddir(d); //reset dir to first index
         printf("Number of files in directory: %i\n",numManFiles);
-        /// this falls out of scope at the end of this function or if block
-        /// need to malloc instead. you also need to use malloc because this could stack overflow on long lists
 		filePointer2 = (struct fileInfo*)malloc(sizeof(struct fileInfo) * numManFiles);
     
         int dirIndex = 0;
@@ -170,23 +151,7 @@ int main (int argc, char *argv[]){ // format is ./client website port
                 dirIndex++;
 				bzero(fBuffer,10000);
             }
-			/*TODO
-			n = read(sockfd,readBuffer,sizeof(readBuffer));
-			if (n < 0) error("ERROR reading from socket");
-			else printf("Num of bytes read: %i\n",n);
-			if (strcmp(readBuffer,"DNE") == 0){
-				//copy whole file
-				printf("A\n");
-			}
-			else if (strcmp(readBuffer,indexPointer->hash) == 0){
-				n = write(sockfd,"File OK",7);
-				printf("B\n");
-			}
-			else{
-				printf("C\n");
-				//initiate block check here
-			}
-			*/
+
         }
 		dirIndex = 0;
         closedir(d);
